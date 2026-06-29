@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirzakhojayev Abdulloh — AI / Machine Learning Engineer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      colors: {
+        accent: '#38bdf8',
+      }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  ::selection { background: #38bdf8; color: #0a0a0b; }
+  body { -webkit-font-smoothing: antialiased; }
+
+  /* subtle grid backdrop */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(148,163,184,0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148,163,184,0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .light .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(15,23,42,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15,23,42,0.05) 1px, transparent 1px);
+  }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  .card-glow { transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s, box-shadow .35s; }
+  .card-glow:hover { transform: translateY(-6px); border-color: rgba(56,189,248,0.5); box-shadow: 0 0 0 1px rgba(56,189,248,0.15), 0 24px 50px -20px rgba(56,189,248,0.25); }
+  .card-glow .idx { transition: color .35s; }
+  .card-glow:hover .idx { color: #38bdf8; }
+
+  .tag { transition: background-color .2s, border-color .2s, color .2s; }
+  .tag:hover { border-color: rgba(56,189,248,0.6); color: #38bdf8; }
+
+  .nav-link { position: relative; }
+  .nav-link::after { content: ''; position: absolute; left: 0; bottom: -3px; height: 1.5px; width: 0; background: #38bdf8; transition: width .3s; }
+  .nav-link:hover::after { width: 100%; }
+
+  @keyframes pulse-wave {
+    0%, 100% { transform: scaleY(0.4); opacity: .5; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+  .wave-bar { animation: pulse-wave 1.4s ease-in-out infinite; transform-origin: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .wave-bar { animation: none; }
+  }
+</style>
+</head>
+
+<body class="bg-zinc-50 dark:bg-[#0a0a0b] text-zinc-700 dark:text-zinc-300 font-sans transition-colors duration-300">
+
+<!-- NAV -->
+<header class="fixed top-0 inset-x-0 z-50 border-b border-zinc-200/80 dark:border-white/5 bg-zinc-50/80 dark:bg-[#0a0a0b]/80 backdrop-blur-xl">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5 group">
+      <span class="font-mono text-sm font-medium text-zinc-900 dark:text-white tracking-tight">MA</span>
+      <span class="text-zinc-400 dark:text-zinc-600">/</span>
+      <span class="font-mono text-xs text-zinc-500 dark:text-zinc-500 group-hover:text-accent transition-colors">ml.engineer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+      <a href="#about" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">About</a>
+      <a href="#education" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">Education</a>
+      <a href="#projects" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">Projects</a>
+      <a href="#skills" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">Skills</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="mailto:mirzakhojayevabdulloh@gmail.com" class="hidden sm:inline-flex text-xs font-medium px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-white/10 hover:border-accent hover:text-accent transition-colors">Get in touch</a>
+      <button id="themeToggle" aria-label="Toggle color theme" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-300 dark:border-white/10 hover:border-accent transition-colors">
+        <svg class="dark:hidden w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="hidden dark:block w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="relative grid-bg pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-zinc-50 dark:to-[#0a0a0b] pointer-events-none"></div>
+  <div class="absolute top-20 -right-20 w-96 h-96 rounded-full bg-accent/10 blur-3xl pointer-events-none"></div>
+  <div class="relative max-w-6xl mx-auto px-6">
+    <div class="flex items-center gap-3 mb-8 reveal">
+      <span class="flex h-2 w-2 relative">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+      </span>
+      <span class="font-mono text-xs tracking-wide text-zinc-500 dark:text-zinc-500">Open to ML &amp; CV opportunities</span>
+    </div>
+
+    <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.02]">
+      Mirzakhojayev<br>Abdulloh
+    </h1>
+
+    <p class="reveal mt-6 max-w-2xl text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">
+      I build neural networks from the ground up — from
+      <span class="text-zinc-900 dark:text-white font-medium">retrieval-augmented language systems</span> to
+      <span class="text-zinc-900 dark:text-white font-medium">audio classification</span> and
+      <span class="text-zinc-900 dark:text-white font-medium">pixel-level scene understanding</span>.
+    </p>
+
+    <div class="reveal mt-8 inline-flex items-center gap-1 font-mono text-xs text-zinc-500 dark:text-zinc-500">
+      <span>Artificial Intelligence</span>
+      <span class="text-accent px-1">|</span>
+      <span>Machine Learning</span>
+    </div>
+
+    <!-- contact row -->
+    <div class="reveal mt-10 flex flex-wrap items-center gap-3">
+      <a href="mailto:mirzakhojayevabdulloh@gmail.com" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium hover:bg-accent hover:text-zinc-900 dark:hover:bg-accent transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        Email
+      </a>
+      <a href="tel:+998993914625" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-white/10 text-sm font-medium hover:border-accent hover:text-accent transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +998 99 391 46 25
+      </a>
+      <a href="https://www.linkedin.com/in/mirzakhojayevabdulloh" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-white/10 text-sm font-medium hover:border-accent hover:text-accent transition-colors">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17V9.99H6.06V17h2.28zM7.2 8.95a1.32 1.32 0 1 0 0-2.64 1.32 1.32 0 0 0 0 2.64zM18 17v-3.84c0-2.05-.44-3.62-2.83-3.62-1.15 0-1.92.63-2.24 1.23h-.03V9.99h-2.19V17h2.28v-3.47c0-.92.17-1.8 1.31-1.8 1.12 0 1.14 1.05 1.14 1.86V17H18z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/mirzakhojayevabdulloh" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-white/10 text-sm font-medium hover:border-accent hover:text-accent transition-colors">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.36-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- animated equalizer signature -->
+  <div class="relative max-w-6xl mx-auto px-6 mt-16">
+    <div class="flex items-end gap-1.5 h-12 opacity-60" aria-hidden="true">
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:0s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.1s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.2s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.3s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.15s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.25s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.05s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.35s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.2s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.1s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.3s"></span>
+      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:0s"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
+  <div class="grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-4 reveal">
+      <span class="font-mono text-xs text-accent tracking-widest">01 — ABOUT</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white tracking-tight">Engineering intelligence into software.</h2>
+    </div>
+    <div class="md:col-span-8 reveal space-y-5 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
+      <p>
+        I'm a software engineering student specializing in <span class="text-zinc-900 dark:text-white font-medium">artificial intelligence applications and solutions</span>. My work centers on building machine learning systems end to end — designing the architecture, writing the training pipeline, and shipping the result.
+      </p>
+      <p>
+        Across my projects I've trained convolutional networks from scratch, implemented transformer-based segmentation models, and built retrieval-augmented LLM systems grounded in real document context. I care about the details that make models actually work: signal preprocessing, regularization, and prompts that hold up under real use.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
+  <span class="font-mono text-xs text-accent tracking-widest reveal block">02 — EDUCATION</span>
+  <div class="mt-8 reveal">
+    <div class="group relative rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div>
+          <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">PDP University</h3>
+          <p class="mt-1 text-zinc-500 dark:text-zinc-500 text-sm flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Tashkent, Uzbekistan
+          </p>
+          <p class="mt-4 text-zinc-700 dark:text-zinc-300 font-medium">Software Engineering</p>
+          <p class="text-zinc-500 dark:text-zinc-400">Artificial Intelligence Applications and Solutions</p>
+        </div>
+        <span class="shrink-0 font-mono text-sm px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">2024 — 2028</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
+  <div class="flex items-end justify-between flex-wrap gap-4 reveal">
+    <div>
+      <span class="font-mono text-xs text-accent tracking-widest">03 — PROJECTS</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white tracking-tight">Selected work</h2>
+    </div>
+    <span class="font-mono text-xs text-zinc-400 dark:text-zinc-600">3 projects · code on GitHub</span>
+  </div>
+
+  <div class="mt-12 grid gap-6">
+
+    <!-- Project 1 -->
+    <article class="group reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
+      <div class="grid md:grid-cols-12 gap-6">
+        <div class="md:col-span-1"><span class="idx font-mono text-sm text-zinc-300 dark:text-zinc-700">/01</span></div>
+        <div class="md:col-span-11">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <span class="inline-block font-mono text-[11px] tracking-wide px-2 py-1 rounded bg-accent/10 text-accent mb-3">LLM · RAG</span>
+              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">AI RAG Chatbot</h3>
+              <p class="text-zinc-500 dark:text-zinc-500 text-sm">Intelligent context-aware assistant</p>
+            </div>
+            <a href="https://github.com/mirzakhojayevabdulloh" target="_blank" rel="noopener" aria-label="View AI RAG Chatbot on GitHub" class="shrink-0 w-10 h-10 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 group-hover:border-accent group-hover:text-accent transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+          <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Engineered an end-to-end RAG chatbot delivering grounded responses from unstructured documents, built as a serverless platform where users upload PDFs, semantically index them, and query an AI assistant anchored in document context. Designed custom bilingual system prompts that interpret English technical concepts in native Uzbek explanations.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2 font-mono text-xs">
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">LangChain</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">pdf-parse</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">gemini-embedding-001</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">1536-dim vectors</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 2 -->
+    <article class="group reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
+      <div class="grid md:grid-cols-12 gap-6">
+        <div class="md:col-span-1"><span class="idx font-mono text-sm text-zinc-300 dark:text-zinc-700">/02</span></div>
+        <div class="md:col-span-11">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <span class="inline-block font-mono text-[11px] tracking-wide px-2 py-1 rounded bg-accent/10 text-accent mb-3">DEEP LEARNING · AUDIO</span>
+              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">AudioCNN</h3>
+              <p class="text-zinc-500 dark:text-zinc-500 text-sm">End-to-end sound classification system</p>
+            </div>
+            <a href="https://github.com/mirzakhojayevabdulloh" target="_blank" rel="noopener" aria-label="View AudioCNN on GitHub" class="shrink-0 w-10 h-10 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 group-hover:border-accent group-hover:text-accent transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+          <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Designed and trained a ResNet-34-style CNN from scratch in PyTorch to classify raw audio into 50 environmental categories from the ESC-50 dataset. Built a DSP pipeline converting raw waveforms to 128-bin log-mel spectrograms, and optimized generalization with MixUp, SpecAugment, label smoothing, and a OneCycleLR schedule with AdamW.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2 font-mono text-xs">
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">PyTorch</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">ResNet-34</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">ESC-50</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">log-mel spectrograms</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">SpecAugment</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 3 -->
+    <article class="group reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
+      <div class="grid md:grid-cols-12 gap-6">
+        <div class="md:col-span-1"><span class="idx font-mono text-sm text-zinc-300 dark:text-zinc-700">/03</span></div>
+        <div class="md:col-span-11">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <span class="inline-block font-mono text-[11px] tracking-wide px-2 py-1 rounded bg-accent/10 text-accent mb-3">COMPUTER VISION · TRANSFORMERS</span>
+              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">Semantic Segmentation with SegFormer</h3>
+              <p class="text-zinc-500 dark:text-zinc-500 text-sm">Pixel-level understanding of urban scenes</p>
+            </div>
+            <a href="https://github.com/mirzakhojayevabdulloh" target="_blank" rel="noopener" aria-label="View SegFormer project on GitHub" class="shrink-0 w-10 h-10 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 group-hover:border-accent group-hover:text-accent transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+          <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Implemented a SegFormer-based model for pixel-level classification of urban street scenes on the Cityscapes dataset. Built a lightweight transformer encoder-decoder — a Mix Transformer backbone with an all-MLP decoder — to segment 19 semantic classes including roads, buildings, vehicles, and pedestrians, with a complete training pipeline from data loading to checkpoint management.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2 font-mono text-xs">
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">SegFormer</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">Cityscapes</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">Mix Transformer</span>
+            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">19 classes</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
+  <span class="font-mono text-xs text-accent tracking-widest reveal block">04 — SKILLS</span>
+  <h2 class="mt-4 text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white tracking-tight reveal">The toolkit</h2>
+
+  <div class="mt-12 grid md:grid-cols-2 gap-x-12 gap-y-10">
+    <div class="reveal">
+      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">PROGRAMMING LANGUAGES</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Python</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">TOOLS &amp; PLATFORMS</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Git</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">GitHub</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Jupyter Notebook</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">AWS</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">AI / ML TECHNOLOGIES</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">NumPy</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">pandas</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Matplotlib</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">seaborn</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">scikit-learn</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">PyTorch</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Deep Learning</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Computer Vision</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Semantic Segmentation</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Model Training</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">LLMs &amp; RAG</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">OpenAI</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Google Gemini</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Anthropic APIs</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">LangChain</span>
+      </div>
+    </div>
+
+    <div class="reveal md:col-span-2">
+      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">CORE COMPETENCIES</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Machine Learning algorithms</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Deep Learning</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Model training and evaluation</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Data preprocessing &amp; feature engineering</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Problem-solving</span>
+        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Teamwork</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES & CERTIFICATIONS -->
+<section class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
+  <div class="grid md:grid-cols-2 gap-12">
+    <div class="reveal">
+      <span class="font-mono text-xs text-accent tracking-widest">05 — LANGUAGES</span>
+      <div class="mt-8 space-y-4">
+        <div class="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/5">
+          <span class="text-lg font-medium text-zinc-900 dark:text-white">Uzbek</span>
+          <span class="font-mono text-sm text-zinc-500 dark:text-zinc-400">Native</span>
+        </div>
+        <div class="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/5">
+          <span class="text-lg font-medium text-zinc-900 dark:text-white">English</span>
+          <span class="font-mono text-sm text-zinc-500 dark:text-zinc-400">C1</span>
+        </div>
+        <div class="flex items-center justify-between pb-4">
+          <span class="text-lg font-medium text-zinc-900 dark:text-white">Russian</span>
+          <span class="font-mono text-sm text-zinc-500 dark:text-zinc-400">B1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <span class="font-mono text-xs text-accent tracking-widest">06 — CERTIFICATIONS</span>
+      <div class="mt-8 space-y-4">
+        <div class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-5 card-glow">
+          <div class="flex items-center justify-between">
+            <span class="font-medium text-zinc-900 dark:text-white">IELTS</span>
+            <span class="font-mono text-sm px-2.5 py-1 rounded-md bg-accent/10 text-accent">7.5</span>
+          </div>
+          <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-500">English language proficiency</p>
+        </div>
+        <div class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-5 card-glow">
+          <div class="flex items-center justify-between">
+            <span class="font-medium text-zinc-900 dark:text-white">IBM SkillsBuild</span>
+            <span class="font-mono text-xs px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-500">Credential</span>
+          </div>
+          <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-500">Data Fundamentals</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-zinc-200 dark:border-white/5">
+  <div class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div>
+      <p class="font-semibold text-zinc-900 dark:text-white">Mirzakhojayev Abdulloh</p>
+      <p class="font-mono text-xs text-zinc-400 dark:text-zinc-600 mt-1">AI / Machine Learning Engineer · Tashkent, UZ</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="mailto:mirzakhojayevabdulloh@gmail.com" aria-label="Email" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 hover:border-accent hover:text-accent transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/mirzakhojayevabdulloh" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 hover:border-accent hover:text-accent transition-colors">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17V9.99H6.06V17h2.28zM7.2 8.95a1.32 1.32 0 1 0 0-2.64 1.32 1.32 0 0 0 0 2.64zM18 17v-3.84c0-2.05-.44-3.62-2.83-3.62-1.15 0-1.92.63-2.24 1.23h-.03V9.99h-2.19V17h2.28v-3.47c0-.92.17-1.8 1.31-1.8 1.12 0 1.14 1.05 1.14 1.86V17H18z"/></svg>
+      </a>
+      <a href="https://github.com/mirzakhojayevabdulloh" target="_blank" rel="noopener" aria-label="GitHub" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 hover:border-accent hover:text-accent transition-colors">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.36-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle (defaults to dark)
+  const toggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  toggle.addEventListener('click', () => {
+    const isDark = root.classList.toggle('dark');
+    root.classList.toggle('light', !isDark);
+  });
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = Math.min(i * 60, 180) + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
