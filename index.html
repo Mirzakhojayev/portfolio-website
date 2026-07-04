@@ -1,455 +1,876 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mirzakhojayev Abdulloh — AI / Machine Learning Engineer</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Abdulloh Mirzakhojayev — AI / ML Engineer</title>
+<meta name="description" content="Portfolio of Mirzakhojayev Abdulloh — AI / Machine Learning engineer building neural networks from the ground up.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  darkMode: 'class',
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-      },
-      colors: {
-        accent: '#38bdf8',
-      }
-    }
-  }
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-  html { scroll-behavior: smooth; }
-  ::selection { background: #38bdf8; color: #0a0a0b; }
-  body { -webkit-font-smoothing: antialiased; }
+:root{
+  --bg:#0a0a0a;
+  --ink:#f2f2ec;
+  --muted:#9a9a90;
+  --dim:#5a5a52;
+  --line:rgba(242,242,236,.1);
+  --lime:#d4ff3f;
+  --panel:#111110;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html.lenis{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--lime);color:#0a0a0a}
+h1,h2,h3,.display{font-family:'Syne',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:inherit;text-decoration:none}
 
-  /* subtle grid backdrop */
-  .grid-bg {
-    background-image:
-      linear-gradient(to right, rgba(148,163,184,0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(148,163,184,0.07) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-  .light .grid-bg {
-    background-image:
-      linear-gradient(to right, rgba(15,23,42,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(15,23,42,0.05) 1px, transparent 1px);
-  }
+/* ---------- grain ---------- */
+body::after{
+  content:'';position:fixed;inset:-50%;z-index:99;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite;
+}
+@keyframes grain{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}20%{transform:translate(-15%,5%)}
+  30%{transform:translate(7%,-25%)}40%{transform:translate(-5%,25%)}50%{transform:translate(-15%,10%)}
+  60%{transform:translate(15%,0)}70%{transform:translate(0,15%)}80%{transform:translate(3%,35%)}90%{transform:translate(-10%,10%)}
+}
 
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
-  .reveal.in { opacity: 1; transform: none; }
+/* ---------- preloader ---------- */
+#loader{
+  position:fixed;inset:0;z-index:200;background:#0a0a0a;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:5vw;
+}
+#loader .count{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(70px,16vw,190px);line-height:.85;color:var(--lime)}
+#loader .boot{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);line-height:2}
+#loader .boot .ok{color:var(--lime)}
 
-  .card-glow { transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s, box-shadow .35s; }
-  .card-glow:hover { transform: translateY(-6px); border-color: rgba(56,189,248,0.5); box-shadow: 0 0 0 1px rgba(56,189,248,0.15), 0 24px 50px -20px rgba(56,189,248,0.25); }
-  .card-glow .idx { transition: color .35s; }
-  .card-glow:hover .idx { color: #38bdf8; }
+/* ---------- cursor ---------- */
+#cursorDot,#cursorRing{position:fixed;top:0;left:0;pointer-events:none;z-index:150;border-radius:50%}
+#cursorDot{width:8px;height:8px;background:var(--lime);transform:translate(-50%,-50%)}
+#cursorRing{
+  width:38px;height:38px;border:1.5px solid rgba(212,255,63,.5);
+  transform:translate(-50%,-50%);
+  transition:width .3s,height .3s,border-color .3s,background .3s;
+}
+#cursorRing.hot{width:64px;height:64px;background:rgba(212,255,63,.08);border-color:var(--lime)}
+@media(hover:none),(pointer:coarse){#cursorDot,#cursorRing{display:none}}
 
-  .tag { transition: background-color .2s, border-color .2s, color .2s; }
-  .tag:hover { border-color: rgba(56,189,248,0.6); color: #38bdf8; }
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:80;mix-blend-mode:normal;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 4vw;
+}
+.nav .brand{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:.02em}
+.nav .brand em{color:var(--lime);font-style:normal}
+.nav-links{display:flex;gap:26px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.nav-links a{transition:color .25s}
+.nav-links a:hover{color:var(--lime)}
+@media(max-width:700px){.nav-links{display:none}}
+@media(max-width:560px){
+  .nav .status{display:none}
+  .hero .kicker{letter-spacing:.12em;font-size:10px}
+}
+.nav .status{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);display:flex;align-items:center;gap:7px}
+.nav .status i{width:7px;height:7px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  .nav-link { position: relative; }
-  .nav-link::after { content: ''; position: absolute; left: 0; bottom: -3px; height: 1.5px; width: 0; background: #38bdf8; transition: width .3s; }
-  .nav-link:hover::after { width: 100%; }
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:130px 0 8vh}
+#dust{position:absolute;inset:0;width:100%;height:100%}
+.hero-inner{position:relative;z-index:2;padding:0 4vw 0}
+.hero .kicker{
+  font-family:'JetBrains Mono',monospace;font-size:clamp(11px,1.3vw,13px);letter-spacing:.25em;color:var(--lime);
+  margin-bottom:2vh;
+}
+.h-line{overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.h-line span{display:inline-block;will-change:transform}
+.hero h1{
+  font-size:clamp(20px,5.4vw,84px);
+  font-weight:800;line-height:.92;letter-spacing:-.015em;text-transform:uppercase;
+}
+.hero h1 .hollow{
+  color:transparent;-webkit-text-stroke:1.5px var(--ink);
+}
+.hero h1 .lime{color:var(--lime)}
+.hero h1 .dot{color:var(--lime);-webkit-text-stroke:0}
+.hero-meta{
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  padding:5vh 0 4vh;
+}
+.hero-links{display:flex;gap:10px;flex-wrap:wrap}
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:12px 20px;border-radius:999px;
+  border:1px solid var(--line);color:var(--muted);
+  transition:color .3s,border-color .3s,background .3s;
+  will-change:transform;
+}
+.pill:hover{color:#0a0a0a;background:var(--lime);border-color:var(--lime)}
+.pill svg{width:14px;height:14px}
+.pill.solid{background:var(--lime);color:#0a0a0a;border-color:var(--lime);font-weight:500}
+.pill.solid:hover{background:var(--ink);border-color:var(--ink)}
 
-  @keyframes pulse-wave {
-    0%, 100% { transform: scaleY(0.4); opacity: .5; }
-    50% { transform: scaleY(1); opacity: 1; }
-  }
-  .wave-bar { animation: pulse-wave 1.4s ease-in-out infinite; transform-origin: center; }
+/* ---------- marquee ---------- */
+.marquee{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:26px 0;overflow:hidden;white-space:nowrap;position:relative;
+}
+.marquee .track{display:inline-flex;will-change:transform}
+.marquee .unit{display:inline-flex;align-items:center;gap:34px;padding-right:34px}
+.marquee .word{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,58px);text-transform:uppercase;letter-spacing:0;
+  color:transparent;-webkit-text-stroke:1px rgba(242,242,236,.45);
+}
+.marquee .word.fill{color:var(--lime);-webkit-text-stroke:0}
+.marquee .star{color:var(--lime);font-size:clamp(20px,3vw,34px)}
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .wave-bar { animation: none; }
-  }
+/* ---------- sections ---------- */
+.wrap{max-width:1200px;margin:0 auto;padding:12vh 4vw}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:7vh;flex-wrap:wrap}
+.sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--lime)}
+.sec-title{
+  font-size:clamp(30px,6.5vw,84px);font-weight:800;text-transform:uppercase;letter-spacing:-.015em;line-height:.95;
+}
+.w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
+.w>span{display:inline-block;will-change:transform}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:6vw;align-items:start}
+.about-copy p{font-size:clamp(16px,2vw,21px);line-height:1.75;color:var(--muted)}
+.about-copy p strong{color:var(--ink);font-weight:500}
+.about-copy p+p{margin-top:24px}
+.ln{overflow:hidden}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.stat{background:var(--bg);padding:34px 28px}
+.stat .num{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(34px,4.5vw,56px);color:var(--lime);line-height:1}
+.stat .lbl{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--dim);line-height:1.6;text-transform:uppercase}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr}}
+
+/* projects */
+.proj{
+  display:grid;grid-template-columns:90px 1fr;gap:4vw;
+  padding:7vh 0;border-top:1px solid var(--line);
+  position:relative;
+}
+.proj:last-child{border-bottom:1px solid var(--line)}
+.proj .idx{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(22px,3vw,34px);
+  color:transparent;-webkit-text-stroke:1px var(--dim);
+  transition:color .4s,-webkit-text-stroke-color .4s;
+}
+.proj:hover .idx{color:var(--lime);-webkit-text-stroke-color:var(--lime)}
+.proj-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:44px;
+  transform-style:preserve-3d;will-change:transform;position:relative;overflow:hidden;
+}
+.proj-card::before{
+  content:'';position:absolute;top:0;left:-70%;width:50%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(212,255,63,.05),transparent);
+  transform:skewX(-20deg);transition:left .7s ease;
+}
+.proj-card:hover::before{left:130%}
+.proj-tagline{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;color:var(--lime);text-transform:uppercase}
+.proj h3{margin-top:14px;font-size:clamp(26px,3.6vw,44px);font-weight:800;line-height:1.02;text-transform:uppercase;letter-spacing:-.01em}
+.proj .sub{margin-top:8px;font-size:14px;color:var(--dim)}
+.proj .desc{margin-top:20px;max-width:760px;font-size:15.5px;line-height:1.75;color:var(--muted)}
+.proj-foot{margin-top:26px;display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);
+  border:1px solid var(--line);padding:7px 13px;border-radius:999px;
+  transition:color .25s,border-color .25s;
+}
+.proj-card:hover .tag{border-color:rgba(212,255,63,.35)}
+.arrow-link{
+  display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  letter-spacing:.12em;color:var(--ink);white-space:nowrap;
+}
+.arrow-link .circ{
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;
+  transition:background .3s,border-color .3s,transform .3s;
+}
+.arrow-link:hover .circ{background:var(--lime);border-color:var(--lime);transform:rotate(45deg)}
+.arrow-link:hover .circ svg{stroke:#0a0a0a}
+.arrow-link svg{width:16px;height:16px;stroke:var(--ink);transition:stroke .3s}
+@media(max-width:760px){.proj{grid-template-columns:1fr;gap:14px}.proj-card{padding:28px 22px}}
+
+/* education */
+.edu{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap;
+  border:1px solid var(--line);border-radius:22px;padding:46px;background:var(--panel);
+  position:relative;overflow:hidden;
+}
+.edu::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--lime)}
+.edu h3{font-size:clamp(26px,3.4vw,40px);font-weight:800;text-transform:uppercase}
+.edu .loc{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);letter-spacing:.08em}
+.edu .deg{margin-top:20px;font-size:17px;font-weight:600}
+.edu .spec{margin-top:4px;font-size:14.5px;color:var(--muted)}
+.edu .years{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(20px,2.6vw,30px);
+  color:transparent;-webkit-text-stroke:1px var(--lime);white-space:nowrap;
+}
+
+/* skills */
+.skill-block{border-top:1px solid var(--line);padding:36px 0;display:grid;grid-template-columns:280px 1fr;gap:24px}
+.skill-block:last-of-type{border-bottom:1px solid var(--line)}
+.skill-block h3{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;padding-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{
+  font-size:14px;padding:10px 18px;border-radius:999px;border:1px solid var(--line);color:var(--muted);
+  transition:all .25s;will-change:transform;
+}
+.chip:hover{background:var(--lime);color:#0a0a0a;border-color:var(--lime);transform:translateY(-3px) rotate(-1deg)}
+@media(max-width:760px){.skill-block{grid-template-columns:1fr;gap:14px}}
+
+/* languages & certs */
+.lc{display:grid;grid-template-columns:1fr 1fr;gap:6vw}
+.lang{padding:22px 0;border-bottom:1px solid var(--line)}
+.lang .row{display:flex;justify-content:space-between;align-items:baseline}
+.lang .name{font-family:'Syne',sans-serif;font-weight:700;font-size:20px}
+.lang .lvl{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--lime)}
+.bar{height:3px;background:rgba(242,242,236,.08);margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--lime);width:0}
+.cert{
+  border:1px solid var(--line);border-radius:16px;padding:26px 28px;background:var(--panel);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  transition:border-color .3s,transform .3s;
+}
+.cert+.cert{margin-top:14px}
+.cert:hover{border-color:rgba(212,255,63,.4);transform:translateX(6px)}
+.cert .name{font-family:'Syne',sans-serif;font-weight:700;font-size:18px}
+.cert .sub{margin-top:4px;font-size:13px;color:var(--dim)}
+.cert .score{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--lime);white-space:nowrap;
+}
+.cert .score.small{font-size:13px;font-family:'JetBrains Mono',monospace;font-weight:400;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+@media(max-width:820px){.lc{grid-template-columns:1fr;gap:8vh}}
+
+/* contact */
+.contact{padding:16vh 4vw 10vh;text-align:center;position:relative;overflow:hidden}
+.contact .small{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.25em;color:var(--lime)}
+.contact h2{
+  margin-top:3vh;font-size:clamp(28px,7.6vw,118px);font-weight:800;line-height:.95;text-transform:uppercase;letter-spacing:-.015em;
+}
+.contact h2 .hollow{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.contact p{margin:4vh auto 0;max-width:440px;color:var(--muted);font-size:16px;line-height:1.7}
+.big-btn{
+  display:inline-flex;align-items:center;gap:14px;margin-top:5vh;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(15px,2vw,19px);
+  background:var(--lime);color:#0a0a0a;padding:22px 44px;border-radius:999px;
+  transition:background .3s,color .3s;will-change:transform;
+}
+.big-btn:hover{background:var(--ink)}
+.big-btn svg{width:20px;height:20px}
+
+footer{border-top:1px solid var(--line)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:34px 4vw}
+.foot .l{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim);letter-spacing:.08em}
+.foot .socials{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em}
+.foot .socials a{color:var(--muted);transition:color .25s}
+.foot .socials a:hover{color:var(--lime)}
+
+@media (prefers-reduced-motion: reduce){
+  body::after{animation:none}
+  #loader{display:none}
+  *{animation:none !important;transition:none !important}
+  .bar i{width:var(--w) !important}
+}
 </style>
 </head>
+<body>
 
-<body class="bg-zinc-50 dark:bg-[#0a0a0b] text-zinc-700 dark:text-zinc-300 font-sans transition-colors duration-300">
+<!-- PRELOADER -->
+<div id="loader" aria-hidden="true">
+  <div class="boot">
+    <div>&gt; initializing portfolio<span class="ok"> [OK]</span></div>
+    <div>&gt; loading weights<span class="ok"> [OK]</span></div>
+    <div>&gt; compiling shaders of pure enthusiasm<span class="ok"> [OK]</span></div>
+    <div id="bootLast">&gt; rendering…</div>
+  </div>
+  <div class="count" id="loadCount">0</div>
+</div>
+
+<!-- CURSOR -->
+<div id="cursorDot" aria-hidden="true"></div>
+<div id="cursorRing" aria-hidden="true"></div>
 
 <!-- NAV -->
-<header class="fixed top-0 inset-x-0 z-50 border-b border-zinc-200/80 dark:border-white/5 bg-zinc-50/80 dark:bg-[#0a0a0b]/80 backdrop-blur-xl">
-  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="#top" class="flex items-center gap-2.5 group">
-      <span class="font-mono text-sm font-medium text-zinc-900 dark:text-white tracking-tight">MA</span>
-      <span class="text-zinc-400 dark:text-zinc-600">/</span>
-      <span class="font-mono text-xs text-zinc-500 dark:text-zinc-500 group-hover:text-accent transition-colors">ml.engineer</span>
-    </a>
-    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-      <a href="#about" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">About</a>
-      <a href="#education" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">Education</a>
-      <a href="#projects" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">Projects</a>
-      <a href="#skills" class="nav-link hover:text-zinc-900 dark:hover:text-white transition-colors">Skills</a>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="mailto:mirzakhojayevabdulloh@gmail.com" class="hidden sm:inline-flex text-xs font-medium px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-white/10 hover:border-accent hover:text-accent transition-colors">Get in touch</a>
-      <button id="themeToggle" aria-label="Toggle color theme" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-300 dark:border-white/10 hover:border-accent transition-colors">
-        <svg class="dark:hidden w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        <svg class="hidden dark:block w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>
-      </button>
-    </div>
+<header class="nav">
+  <a href="#top" class="brand">MIRZAKHOJAYEV<em>.</em></a>
+  <nav class="nav-links">
+    <a href="#about" data-hot>ABOUT</a>
+    <a href="#work" data-hot>WORK</a>
+    <a href="#skills" data-hot>SKILLS</a>
+    <a href="#contact" data-hot>CONTACT</a>
   </nav>
+  <span class="status"><i></i>AVAILABLE FOR WORK</span>
 </header>
 
 <main id="top">
 
 <!-- HERO -->
-<section class="relative grid-bg pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden">
-  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-zinc-50 dark:to-[#0a0a0b] pointer-events-none"></div>
-  <div class="absolute top-20 -right-20 w-96 h-96 rounded-full bg-accent/10 blur-3xl pointer-events-none"></div>
-  <div class="relative max-w-6xl mx-auto px-6">
-
-    <h1 class="reveal text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.02]">
-      Mirzakhojayev<br>Abdulloh
+<section class="hero">
+  <canvas id="dust" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <p class="kicker h-line"><span>AI / MACHINE LEARNING ENGINEER — TASHKENT, UZ</span></p>
+    <h1>
+      <span class="h-line"><span>ABDULLOH</span></span>
+      <span class="h-line"><span class="hollow">MIRZAKHOJAYEV<span class="dot">.</span></span></span>
     </h1>
-
-    <p class="reveal mt-6 max-w-2xl text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">
-      I build neural networks from the ground up — from
-      <span class="text-zinc-900 dark:text-white font-medium">retrieval-augmented language systems</span> to
-      <span class="text-zinc-900 dark:text-white font-medium">audio classification</span> and
-      <span class="text-zinc-900 dark:text-white font-medium">pixel-level scene understanding</span>.
-    </p>
-
-    <div class="reveal mt-8 inline-flex items-center gap-1 font-mono text-xs text-zinc-500 dark:text-zinc-500">
-      <span>Artificial Intelligence</span>
-      <span class="text-accent px-1">|</span>
-      <span>Machine Learning</span>
-    </div>
-
-    <!-- contact row -->
-    <div class="reveal mt-10 flex flex-wrap items-center gap-3">
-      <a href="mailto:mirzakhojayevabdulloh@gmail.com" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium hover:bg-accent hover:text-zinc-900 dark:hover:bg-accent transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-        Email
-      </a>
-      <a href="tel:+998993914625" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-white/10 text-sm font-medium hover:border-accent hover:text-accent transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        +998 99 391 46 25
-      </a>
-      <a href="https://www.linkedin.com/in/abdulloh-mirzakhojayev/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-white/10 text-sm font-medium hover:border-accent hover:text-accent transition-colors">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17V9.99H6.06V17h2.28zM7.2 8.95a1.32 1.32 0 1 0 0-2.64 1.32 1.32 0 0 0 0 2.64zM18 17v-3.84c0-2.05-.44-3.62-2.83-3.62-1.15 0-1.92.63-2.24 1.23h-.03V9.99h-2.19V17h2.28v-3.47c0-.92.17-1.8 1.31-1.8 1.12 0 1.14 1.05 1.14 1.86V17H18z"/></svg>
-        LinkedIn
-      </a>
-      <a href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-white/10 text-sm font-medium hover:border-accent hover:text-accent transition-colors">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.36-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
-        GitHub
-      </a>
-    </div>
-  </div>
-
-  <!-- animated equalizer signature -->
-  <div class="relative max-w-6xl mx-auto px-6 mt-16">
-    <div class="flex items-end gap-1.5 h-12 opacity-60" aria-hidden="true">
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:0s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.1s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.2s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.3s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.15s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.25s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.05s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.35s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.2s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.1s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:.3s"></span>
-      <span class="wave-bar w-1.5 h-full bg-accent rounded-full" style="animation-delay:0s"></span>
+    <div class="hero-meta">
+      <div class="hero-links">
+        <a class="pill solid" data-magnet data-hot href="mailto:mirzakhojayevabdulloh@gmail.com">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          EMAIL
+        </a>
+        <a class="pill" data-magnet data-hot href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener">GITHUB</a>
+        <a class="pill" data-magnet data-hot href="https://www.linkedin.com/in/abdulloh-mirzakhojayev/" target="_blank" rel="noopener">LINKEDIN</a>
+        <a class="pill" data-magnet data-hot href="tel:+998993914625">+998 99 391 46 25</a>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="marqueeTrack"></div>
+</div>
 
 <!-- ABOUT -->
-<section id="about" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
-  <div class="grid md:grid-cols-12 gap-10">
-    <div class="md:col-span-4 reveal">
-      <span class="font-mono text-xs text-accent tracking-widest">01 — ABOUT</span>
-      <h2 class="mt-4 text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white tracking-tight">Engineering intelligence into software.</h2>
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title" data-split>Engineering intelligence</h2>
     </div>
-    <div class="md:col-span-8 reveal space-y-5 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-      <p>
-        I'm a software engineering student specializing in <span class="text-zinc-900 dark:text-white font-medium">artificial intelligence applications and solutions</span>. My work centers on building machine learning systems end to end — designing the architecture, writing the training pipeline, and shipping the result.
-      </p>
-      <p>
-        Across my projects I've trained convolutional networks from scratch, implemented transformer-based segmentation models, and built retrieval-augmented LLM systems grounded in real document context. I care about the details that make models actually work: signal preprocessing, regularization, and prompts that hold up under real use.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
-  <span class="font-mono text-xs text-accent tracking-widest reveal block">02 — EDUCATION</span>
-  <div class="mt-8 reveal">
-    <div class="group relative rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
-      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-        <div>
-          <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">PDP University</h3>
-          <p class="mt-1 text-zinc-500 dark:text-zinc-500 text-sm flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Tashkent, Uzbekistan
-          </p>
-          <p class="mt-4 text-zinc-700 dark:text-zinc-300 font-medium">Software Engineering</p>
-          <p class="text-zinc-500 dark:text-zinc-400">Artificial Intelligence Applications and Solutions</p>
-        </div>
-        <span class="shrink-0 font-mono text-sm px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">2024 — 2028</span>
+    <div class="about-grid">
+      <div class="about-copy">
+        <p class="ln"><span>I'm a software engineering student specializing in <strong>artificial intelligence applications and solutions</strong>. My work centers on building machine learning systems end to end — designing the architecture, writing the training pipeline, and shipping the result.</span></p>
+        <p class="ln"><span>Across my projects I've trained convolutional networks from scratch, implemented transformer-based segmentation models, and built retrieval-augmented LLM systems grounded in real document context. I care about the details that make models actually work: signal preprocessing, regularization, and prompts that hold up under real use.</span></p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num" data-count="3">0</div><div class="lbl">ML projects shipped end-to-end</div></div>
+        <div class="stat"><div class="num" data-count="50">0</div><div class="lbl">sound classes classified</div></div>
+        <div class="stat"><div class="num" data-count="19">0</div><div class="lbl">semantic classes segmented</div></div>
+        <div class="stat"><div class="num" data-count="1536">0</div><div class="lbl">dims per embedding vector</div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PROJECTS -->
-<section id="projects" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
-  <div class="flex items-end justify-between flex-wrap gap-4 reveal">
-    <div>
-      <span class="font-mono text-xs text-accent tracking-widest">03 — PROJECTS</span>
-      <h2 class="mt-4 text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white tracking-tight">Selected work</h2>
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title" data-split>Selected work</h2>
     </div>
-    <span class="font-mono text-xs text-zinc-400 dark:text-zinc-600">3 projects · code on GitHub</span>
+
+    <article class="proj" data-reveal>
+      <span class="idx">01</span>
+      <div class="proj-card" data-tilt>
+        <span class="proj-tagline">LLM · RAG</span>
+        <h3>AI RAG Chatbot</h3>
+        <p class="sub">Intelligent context-aware assistant</p>
+        <p class="desc">
+          Engineered an end-to-end RAG chatbot delivering grounded responses from unstructured documents, built as a serverless platform where users upload PDFs, semantically index them, and query an AI assistant anchored in document context. Designed custom bilingual system prompts that interpret English technical concepts in native Uzbek explanations.
+        </p>
+        <div class="proj-foot">
+          <div class="tags">
+            <span class="tag">LangChain</span><span class="tag">pdf-parse</span>
+            <span class="tag">gemini-embedding-001</span><span class="tag">1536-dim vectors</span>
+          </div>
+          <a class="arrow-link" data-hot href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="View AI RAG Chatbot on GitHub">
+            VIEW CODE
+            <span class="circ"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="proj" data-reveal>
+      <span class="idx">02</span>
+      <div class="proj-card" data-tilt>
+        <span class="proj-tagline">Deep Learning · Audio</span>
+        <h3>AudioCNN</h3>
+        <p class="sub">End-to-end sound classification system</p>
+        <p class="desc">
+          Designed and trained a ResNet-34-style CNN from scratch in PyTorch to classify raw audio into 50 environmental categories from the ESC-50 dataset. Built a DSP pipeline converting raw waveforms to 128-bin log-mel spectrograms, and optimized generalization with MixUp, SpecAugment, label smoothing, and a OneCycleLR schedule with AdamW.
+        </p>
+        <div class="proj-foot">
+          <div class="tags">
+            <span class="tag">PyTorch</span><span class="tag">ResNet-34</span><span class="tag">ESC-50</span>
+            <span class="tag">log-mel spectrograms</span><span class="tag">SpecAugment</span>
+          </div>
+          <a class="arrow-link" data-hot href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="View AudioCNN on GitHub">
+            VIEW CODE
+            <span class="circ"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="proj" data-reveal>
+      <span class="idx">03</span>
+      <div class="proj-card" data-tilt>
+        <span class="proj-tagline">Computer Vision · Transformers</span>
+        <h3>SegFormer Segmentation</h3>
+        <p class="sub">Pixel-level understanding of urban scenes</p>
+        <p class="desc">
+          Implemented a SegFormer-based model for pixel-level classification of urban street scenes on the Cityscapes dataset. Built a lightweight transformer encoder-decoder — a Mix Transformer backbone with an all-MLP decoder — to segment 19 semantic classes including roads, buildings, vehicles, and pedestrians, with a complete training pipeline from data loading to checkpoint management.
+        </p>
+        <div class="proj-foot">
+          <div class="tags">
+            <span class="tag">SegFormer</span><span class="tag">Cityscapes</span>
+            <span class="tag">Mix Transformer</span><span class="tag">19 classes</span>
+          </div>
+          <a class="arrow-link" data-hot href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="View SegFormer project on GitHub">
+            VIEW CODE
+            <span class="circ"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
   </div>
+</section>
 
-  <div class="mt-12 grid gap-6">
-
-    <!-- Project 1 -->
-    <article class="group reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
-      <div class="grid md:grid-cols-12 gap-6">
-        <div class="md:col-span-1"><span class="idx font-mono text-sm text-zinc-300 dark:text-zinc-700">/01</span></div>
-        <div class="md:col-span-11">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <span class="inline-block font-mono text-[11px] tracking-wide px-2 py-1 rounded bg-accent/10 text-accent mb-3">LLM · RAG</span>
-              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">AI RAG Chatbot</h3>
-              <p class="text-zinc-500 dark:text-zinc-500 text-sm">Intelligent context-aware assistant</p>
-            </div>
-            <a href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="View AI RAG Chatbot on GitHub" class="shrink-0 w-10 h-10 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 group-hover:border-accent group-hover:text-accent transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
-            </a>
-          </div>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            Engineered an end-to-end RAG chatbot delivering grounded responses from unstructured documents, built as a serverless platform where users upload PDFs, semantically index them, and query an AI assistant anchored in document context. Designed custom bilingual system prompts that interpret English technical concepts in native Uzbek explanations.
-          </p>
-          <div class="mt-5 flex flex-wrap gap-2 font-mono text-xs">
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">LangChain</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">pdf-parse</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">gemini-embedding-001</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">1536-dim vectors</span>
-          </div>
-        </div>
+<!-- EDUCATION -->
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title" data-split>Education</h2>
+    </div>
+    <div class="edu" data-reveal>
+      <div>
+        <h3>PDP University</h3>
+        <p class="loc">TASHKENT, UZBEKISTAN</p>
+        <p class="deg">Software Engineering</p>
+        <p class="spec">Artificial Intelligence Applications and Solutions</p>
       </div>
-    </article>
-
-    <!-- Project 2 -->
-    <article class="group reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
-      <div class="grid md:grid-cols-12 gap-6">
-        <div class="md:col-span-1"><span class="idx font-mono text-sm text-zinc-300 dark:text-zinc-700">/02</span></div>
-        <div class="md:col-span-11">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <span class="inline-block font-mono text-[11px] tracking-wide px-2 py-1 rounded bg-accent/10 text-accent mb-3">DEEP LEARNING · AUDIO</span>
-              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">AudioCNN</h3>
-              <p class="text-zinc-500 dark:text-zinc-500 text-sm">End-to-end sound classification system</p>
-            </div>
-            <a href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="View AudioCNN on GitHub" class="shrink-0 w-10 h-10 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 group-hover:border-accent group-hover:text-accent transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
-            </a>
-          </div>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            Designed and trained a ResNet-34-style CNN from scratch in PyTorch to classify raw audio into 50 environmental categories from the ESC-50 dataset. Built a DSP pipeline converting raw waveforms to 128-bin log-mel spectrograms, and optimized generalization with MixUp, SpecAugment, label smoothing, and a OneCycleLR schedule with AdamW.
-          </p>
-          <div class="mt-5 flex flex-wrap gap-2 font-mono text-xs">
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">PyTorch</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">ResNet-34</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">ESC-50</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">log-mel spectrograms</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">SpecAugment</span>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- Project 3 -->
-    <article class="group reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-7 md:p-9 card-glow">
-      <div class="grid md:grid-cols-12 gap-6">
-        <div class="md:col-span-1"><span class="idx font-mono text-sm text-zinc-300 dark:text-zinc-700">/03</span></div>
-        <div class="md:col-span-11">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <span class="inline-block font-mono text-[11px] tracking-wide px-2 py-1 rounded bg-accent/10 text-accent mb-3">COMPUTER VISION · TRANSFORMERS</span>
-              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">Semantic Segmentation with SegFormer</h3>
-              <p class="text-zinc-500 dark:text-zinc-500 text-sm">Pixel-level understanding of urban scenes</p>
-            </div>
-            <a href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="View SegFormer project on GitHub" class="shrink-0 w-10 h-10 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 group-hover:border-accent group-hover:text-accent transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
-            </a>
-          </div>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            Implemented a SegFormer-based model for pixel-level classification of urban street scenes on the Cityscapes dataset. Built a lightweight transformer encoder-decoder — a Mix Transformer backbone with an all-MLP decoder — to segment 19 semantic classes including roads, buildings, vehicles, and pedestrians, with a complete training pipeline from data loading to checkpoint management.
-          </p>
-          <div class="mt-5 flex flex-wrap gap-2 font-mono text-xs">
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">SegFormer</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">Cityscapes</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">Mix Transformer</span>
-            <span class="tag px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400">19 classes</span>
-          </div>
-        </div>
-      </div>
-    </article>
-
+      <span class="years">2024—2028</span>
+    </div>
   </div>
 </section>
 
 <!-- SKILLS -->
-<section id="skills" class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
-  <span class="font-mono text-xs text-accent tracking-widest reveal block">04 — SKILLS</span>
-  <h2 class="mt-4 text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white tracking-tight reveal">The toolkit</h2>
-
-  <div class="mt-12 grid md:grid-cols-2 gap-x-12 gap-y-10">
-    <div class="reveal">
-      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">PROGRAMMING LANGUAGES</h3>
-      <div class="flex flex-wrap gap-2">
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Python</span>
-      </div>
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title" data-split>The toolkit</h2>
     </div>
 
-    <div class="reveal">
-      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">TOOLS &amp; PLATFORMS</h3>
-      <div class="flex flex-wrap gap-2">
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Git</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">GitHub</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Jupyter Notebook</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">AWS</span>
+    <div class="skill-block" data-reveal>
+      <h3>Programming Languages</h3>
+      <div class="chips"><span class="chip">Python</span></div>
+    </div>
+    <div class="skill-block" data-reveal>
+      <h3>Tools &amp; Platforms</h3>
+      <div class="chips">
+        <span class="chip">Git</span><span class="chip">GitHub</span>
+        <span class="chip">Jupyter Notebook</span><span class="chip">AWS</span>
       </div>
     </div>
-
-    <div class="reveal">
-      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">AI / ML TECHNOLOGIES</h3>
-      <div class="flex flex-wrap gap-2">
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">NumPy</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">pandas</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Matplotlib</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">seaborn</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">scikit-learn</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">PyTorch</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Deep Learning</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Computer Vision</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Semantic Segmentation</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Model Training</span>
+    <div class="skill-block" data-reveal>
+      <h3>AI / ML Technologies</h3>
+      <div class="chips">
+        <span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Matplotlib</span>
+        <span class="chip">seaborn</span><span class="chip">scikit-learn</span><span class="chip">PyTorch</span>
+        <span class="chip">Deep Learning</span><span class="chip">Computer Vision</span>
+        <span class="chip">Semantic Segmentation</span><span class="chip">Model Training</span>
       </div>
     </div>
-
-    <div class="reveal">
-      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">LLMs &amp; RAG</h3>
-      <div class="flex flex-wrap gap-2">
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">OpenAI</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Google Gemini</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Anthropic APIs</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">LangChain</span>
+    <div class="skill-block" data-reveal>
+      <h3>LLMs &amp; RAG</h3>
+      <div class="chips">
+        <span class="chip">OpenAI</span><span class="chip">Google Gemini</span>
+        <span class="chip">Anthropic APIs</span><span class="chip">LangChain</span>
       </div>
     </div>
-
-    <div class="reveal md:col-span-2">
-      <h3 class="font-mono text-xs text-zinc-400 dark:text-zinc-600 tracking-widest mb-4">CORE COMPETENCIES</h3>
-      <div class="flex flex-wrap gap-2">
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Machine Learning algorithms</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Deep Learning</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Model training and evaluation</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Data preprocessing &amp; feature engineering</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Problem-solving</span>
-        <span class="tag px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 text-sm text-zinc-700 dark:text-zinc-300">Teamwork</span>
+    <div class="skill-block" data-reveal>
+      <h3>Core Competencies</h3>
+      <div class="chips">
+        <span class="chip">Machine Learning algorithms</span><span class="chip">Deep Learning</span>
+        <span class="chip">Model training and evaluation</span>
+        <span class="chip">Data preprocessing &amp; feature engineering</span>
+        <span class="chip">Problem-solving</span><span class="chip">Teamwork</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- LANGUAGES & CERTIFICATIONS -->
-<section class="max-w-6xl mx-auto px-6 py-20 md:py-28 border-t border-zinc-200 dark:border-white/5">
-  <div class="grid md:grid-cols-2 gap-12">
-    <div class="reveal">
-      <span class="font-mono text-xs text-accent tracking-widest">05 — LANGUAGES</span>
-      <div class="mt-8 space-y-4">
-        <div class="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/5">
-          <span class="text-lg font-medium text-zinc-900 dark:text-white">Uzbek</span>
-          <span class="font-mono text-sm text-zinc-500 dark:text-zinc-400">Native</span>
+<!-- LANGUAGES & CERTS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title" data-split>Languages &amp; certs</h2>
+    </div>
+    <div class="lc">
+      <div>
+        <div class="lang" data-reveal>
+          <div class="row"><span class="name">Uzbek</span><span class="lvl">NATIVE</span></div>
+          <div class="bar"><i style="--w:100%"></i></div>
         </div>
-        <div class="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/5">
-          <span class="text-lg font-medium text-zinc-900 dark:text-white">English</span>
-          <span class="font-mono text-sm text-zinc-500 dark:text-zinc-400">C1</span>
+        <div class="lang" data-reveal>
+          <div class="row"><span class="name">English</span><span class="lvl">C1</span></div>
+          <div class="bar"><i style="--w:85%"></i></div>
         </div>
-        <div class="flex items-center justify-between pb-4">
-          <span class="text-lg font-medium text-zinc-900 dark:text-white">Russian</span>
-          <span class="font-mono text-sm text-zinc-500 dark:text-zinc-400">B1</span>
+        <div class="lang" data-reveal style="border-bottom:none">
+          <div class="row"><span class="name">Russian</span><span class="lvl">B1</span></div>
+          <div class="bar"><i style="--w:55%"></i></div>
         </div>
       </div>
-    </div>
-
-    <div class="reveal">
-      <span class="font-mono text-xs text-accent tracking-widest">06 — CERTIFICATIONS</span>
-      <div class="mt-8 space-y-4">
-        <div class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-5 card-glow">
-          <div class="flex items-center justify-between">
-            <span class="font-medium text-zinc-900 dark:text-white">IELTS</span>
-            <span class="font-mono text-sm px-2.5 py-1 rounded-md bg-accent/10 text-accent">7.5</span>
-          </div>
-          <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-500">English language proficiency</p>
+      <div>
+        <div class="cert" data-reveal>
+          <div><p class="name">IELTS</p><p class="sub">English language proficiency</p></div>
+          <span class="score">7.5</span>
         </div>
-        <div class="rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-5 card-glow">
-          <div class="flex items-center justify-between">
-            <span class="font-medium text-zinc-900 dark:text-white">IBM SkillsBuild</span>
-            <span class="font-mono text-xs px-2.5 py-1 rounded-md border border-zinc-200 dark:border-white/10 text-zinc-500">Credential</span>
-          </div>
-          <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-500">Data Fundamentals</p>
+        <div class="cert" data-reveal>
+          <div><p class="name">IBM SkillsBuild</p><p class="sub">Data Fundamentals</p></div>
+          <span class="score small">CREDENTIAL</span>
         </div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <span class="small h-line"><span>06 — GOT A PROJECT?</span></span>
+  <h2>
+    <span class="h-line"><span>LET'S BUILD</span></span>
+    <span class="h-line"><span class="hollow">SOMETHING</span></span>
+    <span class="h-line"><span>INTELLIGENT<span style="color:var(--lime)">.</span></span></span>
+  </h2>
+  <p class="h-line"><span>Have a project, an internship, or an idea that needs machine learning? My inbox is open.</span></p>
+  <a class="big-btn" data-magnet data-hot href="mailto:mirzakhojayevabdulloh@gmail.com">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+    mirzakhojayevabdulloh@gmail.com
+  </a>
 </section>
 
 </main>
 
-<!-- FOOTER -->
-<footer class="border-t border-zinc-200 dark:border-white/5">
-  <div class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
-    <div>
-      <p class="font-semibold text-zinc-900 dark:text-white">Mirzakhojayev Abdulloh</p>
-      <p class="font-mono text-xs text-zinc-400 dark:text-zinc-600 mt-1">AI / Machine Learning Engineer · Tashkent, UZ</p>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="mailto:mirzakhojayevabdulloh@gmail.com" aria-label="Email" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 hover:border-accent hover:text-accent transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-      </a>
-      <a href="https://www.linkedin.com/in/abdulloh-mirzakhojayev/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 hover:border-accent hover:text-accent transition-colors">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17V9.99H6.06V17h2.28zM7.2 8.95a1.32 1.32 0 1 0 0-2.64 1.32 1.32 0 0 0 0 2.64zM18 17v-3.84c0-2.05-.44-3.62-2.83-3.62-1.15 0-1.92.63-2.24 1.23h-.03V9.99h-2.19V17h2.28v-3.47c0-.92.17-1.8 1.31-1.8 1.12 0 1.14 1.05 1.14 1.86V17H18z"/></svg>
-      </a>
-      <a href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener" aria-label="GitHub" class="w-9 h-9 grid place-items-center rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-500 hover:border-accent hover:text-accent transition-colors">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.36-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
-      </a>
+<footer>
+  <div class="foot">
+    <span class="l">© 2026 MIRZAKHOJAYEV ABDULLOH — TASHKENT, UZ</span>
+    <div class="socials">
+      <a data-hot href="mailto:mirzakhojayevabdulloh@gmail.com">EMAIL</a>
+      <a data-hot href="https://www.linkedin.com/in/abdulloh-mirzakhojayev/" target="_blank" rel="noopener">LINKEDIN</a>
+      <a data-hot href="https://github.com/Mirzakhojayev" target="_blank" rel="noopener">GITHUB</a>
     </div>
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
-  // Theme toggle (defaults to dark)
-  const toggle = document.getElementById('themeToggle');
-  const root = document.documentElement;
-  toggle.addEventListener('click', () => {
-    const isDark = root.classList.toggle('dark');
-    root.classList.toggle('light', !isDark);
+(function(){
+'use strict';
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+const hasGsap = !!window.gsap;
+
+/* ---------- marquee content ---------- */
+(function buildMarquee(){
+  const words = ['PYTORCH','TRANSFORMERS','RAG','CNN','SEGFORMER','LANGCHAIN','COMPUTER VISION','DEEP LEARNING'];
+  const unitHTML = words.map((w,i) =>
+    '<span class="word' + (i % 4 === 0 ? ' fill' : '') + '">' + w + '</span><span class="star">✦</span>'
+  ).join('');
+  const track = document.getElementById('marqueeTrack');
+  for (let i = 0; i < 3; i++){
+    const u = document.createElement('div');
+    u.className = 'unit';
+    u.innerHTML = unitHTML;
+    track.appendChild(u);
+  }
+})();
+
+/* ---------- 2D canvas particle drift ---------- */
+(function dust(){
+  if (reduceMotion) return;
+  const canvas = document.getElementById('dust');
+  const ctx = canvas.getContext('2d');
+  let w, h, dpr;
+  const N = window.innerWidth < 768 ? 45 : 90;
+  const pts = [];
+  const mouse = { x: -9999, y: -9999 };
+
+  function size(){
+    dpr = Math.min(window.devicePixelRatio, 2);
+    w = canvas.clientWidth; h = canvas.clientHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  size();
+  window.addEventListener('resize', size);
+
+  for (let i = 0; i < N; i++){
+    pts.push({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random()-.5) * .3, vy: (Math.random()-.5) * .3,
+      r: .8 + Math.random() * 1.8,
+      lime: Math.random() < .22
+    });
+  }
+  window.addEventListener('pointermove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top;
+  }, { passive: true });
+
+  let visible = true;
+  new IntersectionObserver(en => {
+    visible = en[0].isIntersecting;
+    if (visible) requestAnimationFrame(loop);
+  }).observe(canvas);
+
+  function loop(){
+    if (!visible) return;
+    ctx.clearRect(0, 0, w, h);
+    for (const p of pts){
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const d2 = dx*dx + dy*dy;
+      if (d2 < 16000){
+        const d = Math.sqrt(d2) || 1;
+        p.vx += (dx/d) * .12; p.vy += (dy/d) * .12;
+      }
+      p.vx *= .985; p.vy *= .985;
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -10) p.x = w + 10; if (p.x > w + 10) p.x = -10;
+      if (p.y < -10) p.y = h + 10; if (p.y > h + 10) p.y = -10;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = p.lime ? 'rgba(212,255,63,.5)' : 'rgba(242,242,236,.18)';
+      ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ---------- custom cursor ---------- */
+(function cursor(){
+  if (!fine || reduceMotion) return;
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let rx = -100, ry = -100, tx = -100, ty = -100;
+  window.addEventListener('pointermove', (e) => {
+    tx = e.clientX; ty = e.clientY;
+    dot.style.left = tx + 'px'; dot.style.top = ty + 'px';
+  }, { passive: true });
+  (function follow(){
+    rx += (tx - rx) * .16; ry += (ty - ry) * .16;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(follow);
+  })();
+  document.querySelectorAll('a,[data-hot]').forEach(el => {
+    el.addEventListener('pointerenter', () => ring.classList.add('hot'));
+    el.addEventListener('pointerleave', () => ring.classList.remove('hot'));
+  });
+})();
+
+/* ---------- magnetic buttons ---------- */
+(function magnets(){
+  if (!fine || reduceMotion || !hasGsap) return;
+  document.querySelectorAll('[data-magnet]').forEach(el => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      gsap.to(el, {
+        x: (e.clientX - r.left - r.width/2) * .35,
+        y: (e.clientY - r.top - r.height/2) * .35,
+        duration: .4, ease: 'power3.out'
+      });
+    });
+    el.addEventListener('pointerleave', () => {
+      gsap.to(el, { x: 0, y: 0, duration: .6, ease: 'elastic.out(1,.4)' });
+    });
+  });
+})();
+
+/* ---------- 3D tilt on project cards ---------- */
+(function tilt(){
+  if (!fine || reduceMotion) return;
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - .5;
+      const py = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = 'perspective(1100px) rotateY(' + (px*5) + 'deg) rotateX(' + (-py*5) + 'deg)';
+    });
+    card.addEventListener('pointerleave', () => {
+      card.style.transition = 'transform .6s cubic-bezier(.16,1,.3,1)';
+      card.style.transform = 'perspective(1100px) rotateY(0) rotateX(0)';
+      setTimeout(() => card.style.transition = '', 600);
+    });
+    card.addEventListener('pointerenter', () => { card.style.transition = ''; });
+  });
+})();
+
+/* ============================================================
+   GSAP timeline: preloader → hero → scroll scenes
+============================================================ */
+function showEverything(){
+  const loader = document.getElementById('loader');
+  if (loader) loader.style.display = 'none';
+  document.querySelectorAll('.h-line > span').forEach(el => { el.style.transform = 'none'; el.style.opacity = 1; });
+  document.querySelectorAll('.bar i').forEach(el => { el.style.width = getComputedStyle(el).getPropertyValue('--w').trim(); });
+  document.querySelectorAll('.stat .num').forEach(el => { el.textContent = (+el.dataset.count).toLocaleString(); });
+}
+
+if (!hasGsap || reduceMotion){
+  showEverything();
+} else {
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Lenis smooth scroll synced with ScrollTrigger */
+  let lenis = null;
+  if (window.Lenis){
+    lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+    /* route anchor links through Lenis (native jumps get overridden by it) */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target){ e.preventDefault(); lenis.scrollTo(target, { offset: -80 }); }
+      });
+    });
+  }
+
+  /* set initial hidden states */
+  gsap.set('.h-line > span', { yPercent: 115 });
+  gsap.set('[data-reveal]', { opacity: 0, y: 50 });
+
+  /* split section titles into words */
+  document.querySelectorAll('[data-split]').forEach(h => {
+    const words = h.textContent.trim().split(/\s+/);
+    h.innerHTML = words.map(w => '<span class="w"><span>' + w + '</span></span>').join(' ');
+    gsap.set(h.querySelectorAll('.w > span'), { yPercent: 115 });
   });
 
-  // Scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        e.target.style.transitionDelay = Math.min(i * 60, 180) + 'ms';
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
+  /* ---------- preloader ---------- */
+  const counter = { v: 0 };
+  const loaderTl = gsap.timeline();
+  loaderTl
+    .to(counter, {
+      v: 100, duration: 1.6, ease: 'power2.inOut',
+      onUpdate: () => document.getElementById('loadCount').textContent = Math.round(counter.v)
+    })
+    .to('#bootLast', { color: '#d4ff3f', duration: .15 }, '-=.2')
+    .to('#loader', { yPercent: -100, duration: .9, ease: 'power4.inOut' })
+    .set('#loader', { display: 'none' })
+    /* hero reveal */
+    .to('.hero .h-line > span', {
+      yPercent: 0, duration: 1.1, ease: 'power4.out', stagger: .09
+    }, '-=.45');
+
+  /* failsafe: if a weak device renders so slowly the intro stalls, jump to the end */
+  setTimeout(() => { if (loaderTl.progress() < 1) loaderTl.progress(1); }, 4500);
+
+  /* ---------- marquee: base drift + scroll-velocity boost ---------- */
+  const track = document.getElementById('marqueeTrack');
+  const unitWidth = () => track.children[0].offsetWidth;
+  const marqueeX = { v: 0 };
+  let marqueeSpeed = 1;
+  gsap.ticker.add((_, dt) => {
+    marqueeX.v -= (dt * 0.06) * marqueeSpeed;
+    const wpx = unitWidth();
+    if (wpx > 0 && Math.abs(marqueeX.v) >= wpx) marqueeX.v += wpx;
+    track.style.transform = 'translateX(' + marqueeX.v + 'px)';
+  });
+  ScrollTrigger.create({
+    onUpdate: (self) => {
+      marqueeSpeed = 1 + Math.min(Math.abs(self.getVelocity()) / 220, 11);
+      gsap.to({}, { duration: .4, onComplete: () => marqueeSpeed = 1 });
+    }
+  });
+
+  /* ---------- section title word reveals ---------- */
+  document.querySelectorAll('[data-split]').forEach(h => {
+    gsap.to(h.querySelectorAll('.w > span'), {
+      yPercent: 0, duration: 1, ease: 'power4.out', stagger: .07,
+      scrollTrigger: { trigger: h, start: 'top 86%' }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  });
+
+  /* ---------- about paragraph line reveals ---------- */
+  document.querySelectorAll('.ln > span, .contact .h-line > span, .contact h2 .h-line > span').forEach(el => {
+    if (el.closest('.hero')) return;
+    gsap.to(el, {
+      yPercent: 0, duration: 1.05, ease: 'power4.out',
+      scrollTrigger: { trigger: el.parentElement, start: 'top 88%' }
+    });
+  });
+
+  /* ---------- generic reveals ---------- */
+  document.querySelectorAll('[data-reveal]').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: .95, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    });
+  });
+
+  /* ---------- chips cascade ---------- */
+  document.querySelectorAll('.chips').forEach(group => {
+    gsap.set(group.children, { opacity: 0, y: 22, scale: .92 });
+    gsap.to(group.children, {
+      opacity: 1, y: 0, scale: 1, duration: .55, ease: 'back.out(1.6)', stagger: .045,
+      clearProps: 'transform',
+      scrollTrigger: { trigger: group, start: 'top 92%', once: true }
+    });
+  });
+
+  /* ---------- stat counters ---------- */
+  document.querySelectorAll('.stat .num').forEach(el => {
+    const target = +el.dataset.count;
+    ScrollTrigger.create({
+      trigger: el, start: 'top 90%', once: true,
+      onEnter: () => gsap.fromTo(el, { innerText: 0 }, {
+        innerText: target, duration: 1.7, ease: 'power2.out', snap: { innerText: 1 },
+        onUpdate: function(){ el.innerText = Math.round(+el.innerText).toLocaleString(); }
+      })
+    });
+  });
+
+  /* ---------- language bars ---------- */
+  document.querySelectorAll('.bar i').forEach(el => {
+    ScrollTrigger.create({
+      trigger: el, start: 'top 93%', once: true,
+      onEnter: () => gsap.to(el, {
+        width: getComputedStyle(el).getPropertyValue('--w').trim(),
+        duration: 1.3, ease: 'power3.out'
+      })
+    });
+  });
+
+  /* ---------- hero parallax out ---------- */
+  gsap.to('.hero-inner', {
+    yPercent: -14, opacity: .25, ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+
+  /* safety net: recompute trigger positions once fonts/layout settle */
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+}
+})();
 </script>
 
 </body>
